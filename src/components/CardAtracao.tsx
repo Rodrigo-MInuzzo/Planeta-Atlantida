@@ -1,20 +1,36 @@
 import { Favorite, ThumbDown } from "@mui/icons-material";
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Divider, Typography } from "@mui/material";
+import { Atracao } from "../models/atracao";
+import { useAppDispatch } from "../config/hooks";
+import { curtirAtracao, descurtirAtracao } from "../modules/atracoes.slice";
 
-export const CardAtracao = () => {
+interface CardAtracaoProps{
+    atracao:Atracao;
+}
+
+
+export const CardAtracao = (props: CardAtracaoProps) => {
+    const dispach = useAppDispatch();
+
+    const curtir = () =>{
+        dispach(curtirAtracao(props.atracao.id))
+    }
+    
+   const descurtir= () =>{
+    dispach(descurtirAtracao(props.atracao.id))
+   }
     return (
         <Card>
             <CardMedia
                 component="img"
                 height="194"
-                image="https://s3.wasabisys.com/images.planetaatlantida.com.br/2024/lineup/fresno/main.png"
+                image={props.atracao.urlFoto}
             />
             <CardContent>
-                <Typography variant="h5">Fresno</Typography>
-                <Typography variant="body1">
+                <Typography variant="h5">{props.atracao.nome}</Typography>
+                <Typography variant="body1">{props.atracao.descricao}
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus eos cum, quaerat quos, amet ab nihil
-                    eius praesentium, sunt exercitationem sed facere et odio repudiandae voluptates illum magnam totam
-                    illo.
+                    eius praesentium, 
                 </Typography>
                 <Divider sx={{ mt: 2, mb: 2 }} />
                 <Box>
@@ -22,17 +38,17 @@ export const CardAtracao = () => {
                         Horário:
                     </Typography>
                     <Typography component={"span"} variant="body2">
-                        19:00
+                        {props.atracao.horario}
                     </Typography>
                 </Box>
             </CardContent>
 
             <CardActions>
-                <Button>
-                    <Favorite /> <span>Curti!</span>
+                <Button onClick={curtir}>
+                    <Favorite /><span> Curtir({props.atracao.curtidas})</span>
                 </Button>
-                <Button>
-                    <ThumbDown /> Muito ruim!
+                <Button onClick={descurtir}>
+                    <ThumbDown /><span> Muito ruim({props.atracao.descurtidas})</span>
                 </Button>
             </CardActions>
         </Card>

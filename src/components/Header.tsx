@@ -21,7 +21,7 @@ export const Header = () => {
                 </div>
 
                 <div>
-                    <input type="text" />
+                    <switch/>
                 </div>
             </ToolbarStyled>
         </AppBar>
